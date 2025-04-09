@@ -1,11 +1,12 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import mariadb
 
 app = Flask(__name__)
+CORS(app)
 
-# key that contains sql server credentials, grader should format with their own credentials
+
 KEY_FILENAME = '/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/.key.txt'
-
 
 # read and store BU credentials
 def read_creds(filename):
