@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 import mariadb
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app)
 
 
@@ -25,7 +25,7 @@ def read_creds(filename):
     
     return creds
 
-@app.route('/')
+@app.route('/api/')
 def index():
     DB_CONFIG = read_creds(KEY_FILENAME)
 
