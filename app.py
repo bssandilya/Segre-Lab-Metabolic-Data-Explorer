@@ -1,10 +1,11 @@
-from flask import Flask, jsonify
-from flask_cors import CORS
+#!/usr/bin/env python3
+
+from flask import Flask, jsonify, send_from_directory, abort
 import mariadb
+import os
 
-app = Flask(__name__, static_folder='static')
-CORS(app)
-
+app = Flask(__name__, static_folder='/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/static')
+# CORS not needed when frontend is served from same origin
 
 KEY_FILENAME = '/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/.key.txt'
 
@@ -25,7 +26,7 @@ def read_creds(filename):
     
     return creds
 
-@app.route('/api/')
+@app.route('/api/tables')
 def index():
     DB_CONFIG = read_creds(KEY_FILENAME)
 
@@ -39,6 +40,16 @@ def index():
         return jsonify(tables)
     except mariadb.Error as e:
         return jsonify({"error": str(e)}), 500
+
+# serve react frontend
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_static(path):
+    full_path = os.path.join(app.static_folder, path)
+    if os.path.isfile(full_path):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, 'index.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
