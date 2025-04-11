@@ -23,6 +23,25 @@ Make sure you have the following installed:
 - A terminal with access to this project directory
 - Run "npm" in your terminal in Bioed to see if Node.js is configured
 
+
+## Creating a Database Credentials Key
+### 1. Navigate to root project directory: Segre-Lab-Metabolic-Data-Explorer/
+### 2. Create key file
+
+```bash
+touch .key.txt
+```
+
+### 3. Add your BU database credentials in this format
+
+```bash
+<BU_username>
+<password>
+<database_name>
+<port>
+```
+Remember that port is typically **4253** and database name has to be replaced with the name of a database that is **actively being served** on the Bioed SQL server
+
 ## 🛠️ Working on the Frontend (React)
 
 ### 1. Navigate to the frontend directory
