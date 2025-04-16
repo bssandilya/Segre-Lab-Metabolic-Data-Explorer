@@ -1,31 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import DataTable from './components/DataTable';
+import Header from './components/Header';
+import CometPlot from './components/CometPlot';
 
-function App() {
-  const [tables, setTables] = useState([]);     // store fetched tables
-  const [error, setError] = useState(null);     // store any fetch error
+const App = () => {
+    const [columns, setColumns] = useState([]); // Store the dynamically generated column names
+    const [data, setData] = useState([]); // Store fetched data
 
-  useEffect(() => {
-    fetch("/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/tables")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch");
-        return res.json();
-      })
-      .then((data) => setTables(data))
-      .catch((err) => setError(err.message));
-  }, []);
+    useEffect(() => {
+        // Fetch data when the component is mounted
+        fetch("/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/tables")
+            .then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch");
+                return res.json();
+            })
+            .then((fetchedData) => {
+                setData(fetchedData);
+                // Generate column names dynamically from the first object of the fetched data
+                if (fetchedData.length > 0) {
+                    setColumns(Object.keys(fetchedData[0]));
+                }
+            })
+            .catch((err) => console.error("Error fetching data:", err));
+    }, []); // Empty dependency array means this effect runs once when the component mounts
 
-
-  return (
-    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
-      <h1>📊 Tables in Database</h1>
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
-      <ul>
-        {tables.map((table, index) => (
-          <li key={index}>{table}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+    return (
+        <div>
+            <Header />
+            {columns.length > 0 ? (
+                <DataTable columns={columns} data={data} />
+            ) : (
+                <div>Loading...</div>
+            )}
+            <CometPlot />
+        </div>
+    );
+};
 
 export default App;
