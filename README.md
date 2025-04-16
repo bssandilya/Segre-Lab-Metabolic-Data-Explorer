@@ -2,7 +2,7 @@
 
 
 
-## 📁 Project Structure (Important Directories)
+## Project Structure (Important Directories)
 
 ```
 Segre-Lab-Metabolic-Data-Explorer/
@@ -17,7 +17,7 @@ Segre-Lab-Metabolic-Data-Explorer/
 
 ---
 
-## 🧱 Prerequisites
+## Prerequisites
 
 Make sure you have the following installed:
 - A terminal with access to this project directory
@@ -61,7 +61,7 @@ All the frontend code that you will need to edit will be in either src or public
 
 ---
 
-## 📦 Build and Deploy to Flask
+## Build and Deploy to Flask
 
 Once you're done editing and ready to push your changes live:
 
