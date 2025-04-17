@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from './components/DataTable';
 import Header from './components/Header';
+import CometPlot from './components/CometPlot';
 
 const App = () => {
     const [columns, setColumns] = useState([]); // Store the dynamically generated column names
     const [data, setData] = useState([]); // Store fetched data
+    const [cometImage, setCometImage] = useState(null); // Store the comet image
 
     useEffect(() => {
-        // Fetch data when the component is mounted
         fetch("/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/tables")
             .then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch");
@@ -15,9 +16,8 @@ const App = () => {
             })
             .then((fetchedData) => {
                 setData(fetchedData);
-                // Generate column names dynamically from the first object of the fetched data
                 if (fetchedData.length > 0) {
-                    setColumns(fetchedData);
+                    setColumns(fetchedData); // Extract column names from the first row
                 }
             })
             .catch((err) => console.error("Error fetching data:", err));
@@ -25,7 +25,10 @@ const App = () => {
 
     return (
         <div>
-            <Header />
+            {/* Pass columns and data to the Header */}
+            <Header columns={columns} data={data} />
+            <br />
+            <CometPlot data={cometImage} />
             <br />
             {columns.length > 0 ? (
                 <DataTable columns={columns} data={data} />

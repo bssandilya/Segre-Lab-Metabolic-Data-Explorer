@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/css/main.8795ed93.css",
-    "main.js": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/js/main.5dbc1281.js",
+    "main.css": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/css/main.b9eb981f.css",
+    "main.js": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/js/main.c9ec3eac.js",
     "static/js/453.8ab44547.chunk.js": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/js/453.8ab44547.chunk.js",
     "index.html": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/index.html",
-    "main.8795ed93.css.map": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/css/main.8795ed93.css.map",
-    "main.5dbc1281.js.map": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/js/main.5dbc1281.js.map",
+    "main.b9eb981f.css.map": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/css/main.b9eb981f.css.map",
+    "main.c9ec3eac.js.map": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/js/main.c9ec3eac.js.map",
     "453.8ab44547.chunk.js.map": "/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/app/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8795ed93.css",
-    "static/js/main.5dbc1281.js"
+    "static/css/main.b9eb981f.css",
+    "static/js/main.c9ec3eac.js"
   ]
 }

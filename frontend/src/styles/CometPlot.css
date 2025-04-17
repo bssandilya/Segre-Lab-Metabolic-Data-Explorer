@@ -1,0 +1,32 @@
+/* Style for the main container */
+.comet-plot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f9f9f9; /* Light gray background for a clean look */
+    border: 1px solid #ddd; /* Subtle border for separation */
+    border-radius: 8px; /* Rounded corners for a modern feel */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    overflow: hidden;
+}
+
+/* Style for the SVG element */
+.comet-plot svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    background-color: #ffffff; /* White background for the plot */
+    border-radius: 4px; /* Slight rounding for SVG edges */
+}
+
+/* Style for the fallback message */
+.comet-plot p {
+    font-size: 1.2rem;
+    color: #555; /* Neutral gray text color */
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}

@@ -1,25 +1,31 @@
 .data-table {
+    position: relative; /* Ensure positioning for the header */
     flex: 2;
     background: white;
     border-radius: 1rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
     padding: 1rem;
-  }
-  
-  .data-table table {
+}
+
+.data-table-header {
+    position: relative;
+    height: 40px; /* Adjust height for the header */
+    margin-bottom: 1rem;
+}
+
+.data-table table {
     width: 100%;
     border-collapse: collapse;
-  }
-  
-  .data-table th,
-  .data-table td {
+}
+
+.data-table th,
+.data-table td {
     border: 1px solid #e5e7eb;
     padding: 0.75rem;
     text-align: left;
-  }
-  
-  .data-table th {
+}
+
+.data-table th {
     background-color: #f3f4f6;
-  }
-  
+}
