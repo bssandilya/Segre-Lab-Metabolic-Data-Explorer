@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from './components/DataTable';
 import Header from './components/Header';
-import CometPlot from './components/CometPlot';
 
 const App = () => {
     const [columns, setColumns] = useState([]); // Store the dynamically generated column names
@@ -18,21 +17,21 @@ const App = () => {
                 setData(fetchedData);
                 // Generate column names dynamically from the first object of the fetched data
                 if (fetchedData.length > 0) {
-                    setColumns(Object.keys(fetchedData[0]));
+                    setColumns(fetchedData);
                 }
             })
             .catch((err) => console.error("Error fetching data:", err));
-    }, []); // Empty dependency array means this effect runs once when the component mounts
+    }, []);
 
     return (
         <div>
             <Header />
+            <br />
             {columns.length > 0 ? (
                 <DataTable columns={columns} data={data} />
             ) : (
-                <div>Loading...</div>
+                <div id='data_table_loading'>Loading...</div>
             )}
-            <CometPlot />
         </div>
     );
 };

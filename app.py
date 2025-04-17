@@ -4,10 +4,10 @@ from flask import Flask, jsonify, send_from_directory, abort
 import mariadb
 import os
 
-app = Flask(__name__, static_folder='/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/static')
+app = Flask(__name__, static_folder='/var/www/html/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/static')
 # CORS not needed when frontend is served from same origin
 
-KEY_FILENAME = '/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/.key.txt'
+KEY_FILENAME = '/var/www/html/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/.key.txt'
 
 # read and store BU credentials
 def read_creds(filename):

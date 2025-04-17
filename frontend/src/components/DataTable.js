@@ -1,7 +1,10 @@
-import React from 'react';
+// DataTable.js
+import React, { useState, useEffect } from "react";
+import "../styles/DataTable.css";
 
-const DataTable = ({ columns, data }) => {
+function DataTable({ columns, data }) {
     return (
+      <div className="data-table">
         <table>
             <thead>
                 <tr>
@@ -11,16 +14,18 @@ const DataTable = ({ columns, data }) => {
                 </tr>
             </thead>
             <tbody>
-                {data.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                        {columns.map((column, colIndex) => (
-                            <td key={colIndex}>{row[column]}</td>
+                {data.map((row, index) => (
+                    <tr key={index}>
+                        {columns.map((column, columnIndex) => (
+                            <td key={columnIndex}>{row[column]}</td>
                         ))}
                     </tr>
                 ))}
             </tbody>
         </table>
+        </div>
     );
-};
+}
 
 export default DataTable;
+
