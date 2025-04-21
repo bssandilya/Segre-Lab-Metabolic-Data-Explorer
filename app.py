@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, jsonify, send_from_directory, abort
+from flask import Flask, jsonify, send_from_directory, abort, request
 import mariadb
 import os
 
@@ -38,6 +38,51 @@ def index():
         cur.close()
         conn.close()
         return jsonify(tables)
+    except mariadb.Error as e:
+        return jsonify({"error": str(e)}), 500
+@app.route('/api/add-model', methods=['POST'])
+def add_model():
+    DB_CONFIG = read_creds(KEY_FILENAME)
+    
+    data = request.get_json()
+
+    required_fields = [
+        'model_id', 'carbon_id', 'species_id', 'media_id', 'experiment_id',
+        'gapfill_method', 'annotation_method', 'metabolite_ID', 'platform',
+        'biomass_composition', 'date_created', 'control_type', 'notes',
+        'parent_model_id', 'model_file'
+    ]
+    
+    if not all(field in data for field in required_fields):
+        return jsonify({"error": "Missing fields in request"}), 400
+
+    try:
+        conn = mariadb.connect(**DB_CONFIG)
+        cur = conn.cursor()
+
+        query = """
+            INSERT INTO model (
+                model_id, carbon_id, species_id, media_id, experiment_id,
+                gapfill_method, annotation_method, metabolite_ID, platform,
+                biomass_composition, date_created, control_type, notes,
+                parent_model_id, model_file
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """
+
+        values = (
+            data['model_id'], data['carbon_id'], data['species_id'], data['media_id'],
+            data['experiment_id'], data['gapfill_method'], data['annotation_method'],
+            data['metabolite_ID'], data['platform'], data['biomass_composition'],
+            data['date_created'], data['control_type'], data['notes'],
+            data['parent_model_id'], data['model_file']
+        )
+
+        cur.execute(query, values)
+        conn.commit()
+        cur.close()
+        conn.close()
+        return jsonify({"message": "Model added successfully"}), 201
+
     except mariadb.Error as e:
         return jsonify({"error": str(e)}), 500
 

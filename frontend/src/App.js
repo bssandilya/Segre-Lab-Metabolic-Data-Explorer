@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import DataTable from './components/DataTable';
 import Header from './components/Header';
 import CometPlot from './components/CometPlot';
+import AddModelForm from './components/AddModelForm';
+
 
 const App = () => {
     const [columns, setColumns] = useState([]); // Store the dynamically generated column names
@@ -27,6 +29,9 @@ const App = () => {
         <div>
             {/* Pass columns and data to the Header */}
             <Header columns={columns} data={data} />
+            <br />
+            {/* Add New Model Form */}
+            <AddModelForm />
             <br />
             <CometPlot data={cometImage} />
             <br />
