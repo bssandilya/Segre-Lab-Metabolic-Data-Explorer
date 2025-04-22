@@ -2,7 +2,7 @@
 
 
 
-## 📁 Project Structure (Important Directories)
+## Project Structure (Important Directories)
 
 ```
 Segre-Lab-Metabolic-Data-Explorer/
@@ -17,7 +17,7 @@ Segre-Lab-Metabolic-Data-Explorer/
 
 ---
 
-## 🧱 Prerequisites
+## Prerequisites
 
 Make sure you have the following installed:
 - A terminal with access to this project directory
@@ -42,7 +42,7 @@ touch .key.txt
 ```
 Remember that port is typically **4253** and database name has to be replaced with the name of a database that is **actively being served** on the Bioed SQL server
 
-## 🛠️ Working on the Frontend (React)
+## Working on the Frontend (React)
 
 ### 1. Navigate to the frontend directory
 
@@ -54,14 +54,14 @@ cd frontend
 All the frontend code that you will need to edit will be in either src or public. Public should contain all the public-facing assets like images, html favicons, etc. 
 
 
-## 🛠️ Make Your Changes
+## Make Your Changes
 
 - Edit files inside `frontend/src/`
 - `App.js` is the main entry point
 
 ---
 
-## 📦 Build and Deploy to Flask
+## Build and Deploy to Flask
 
 Once you're done editing and ready to push your changes live:
 
