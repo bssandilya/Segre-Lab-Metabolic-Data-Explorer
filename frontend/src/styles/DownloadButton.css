@@ -1,0 +1,22 @@
+.download-button {
+    background-color: #333; /* Dark grey background */
+    color: white; /* White text for contrast */
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px; /* Rounded corners for a modern look */
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.download-button:hover {
+    background-color: #555; /* Slightly lighter grey on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.download-button:active {
+    background-color: #222; /* Darker grey when clicked */
+    transform: scale(0.95); /* Slight shrink effect on click */
+}

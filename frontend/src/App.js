@@ -1,31 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import DataTable from './components/DataTable';
+import Header from './components/Header';
+import CometPlot from './components/CometPlot';
 
-function App() {
-  const [tables, setTables] = useState([]);     // store fetched tables
-  const [error, setError] = useState(null);     // store any fetch error
+const App = () => {
+    const [columns, setColumns] = useState([]); // Store the dynamically generated column names
+    const [data, setData] = useState([]); // Store fetched data
+    const [cometImage, setCometImage] = useState(null); // Store the comet image
 
-  useEffect(() => {
-    fetch("/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/tables")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch");
-        return res.json();
-      })
-      .then((data) => setTables(data))
-      .catch((err) => setError(err.message));
-  }, []);
+    useEffect(() => {
+        fetch("/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/tables")
+            .then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch");
+                return res.json();
+            })
+            .then((fetchedData) => {
+                setData(fetchedData);
+                if (fetchedData.length > 0) {
+                    setColumns(fetchedData); // Extract column names from the first row
+                }
+            })
+            .catch((err) => console.error("Error fetching data:", err));
+    }, []);
 
-
-  return (
-    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
-      <h1>📊 Tables in Database</h1>
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
-      <ul>
-        {tables.map((table, index) => (
-          <li key={index}>{table}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+    return (
+        <div>
+            {/* Pass columns and data to the Header */}
+            <Header columns={columns} data={data} />
+            <br />
+            <CometPlot data={cometImage} />
+            <br />
+            {columns.length > 0 ? (
+                <DataTable columns={columns} data={data} />
+            ) : (
+                <div id='data_table_loading'>Loading...</div>
+            )}
+        </div>
+    );
+};
 
 export default App;
