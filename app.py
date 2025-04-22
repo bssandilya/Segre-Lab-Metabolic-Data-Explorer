@@ -26,13 +26,25 @@ def read_creds(filename):
     
     return creds
 
-@app.route('/api/tables')
-def index():
-    DB_CONFIG = read_creds(KEY_FILENAME)
+# connect to mariadb using BU creds
+def get_db():
+    config = read_creds(KEY_FILENAME)
 
     try:
-        conn = mariadb.connect(**DB_CONFIG)
+        conn = mariadb.connect(**config)
         cur = conn.cursor()
+
+        return conn, cur
+        
+    except mariadb.Error as e:
+        return jsonify({"error": str(e)}), 500
+    
+# testing function, show the tables that are detected in a database
+@app.route('/api/tables')
+def index():
+    conn, cur = get_db()
+
+    try:
         cur.execute("SHOW TABLES;")
         tables = [row[0] for row in cur.fetchall()]
         cur.close()
