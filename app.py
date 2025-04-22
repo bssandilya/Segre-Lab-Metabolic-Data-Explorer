@@ -4,10 +4,10 @@ from flask import Flask, jsonify, send_from_directory, abort
 import mariadb
 import os
 
-app = Flask(__name__, static_folder='/var/www/html/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/static')
+app = Flask(__name__, static_folder='/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/static')
 # CORS not needed when frontend is served from same origin
 
-KEY_FILENAME = '/var/www/html/students_25/rvboz/Segre-Lab-Metabolic-Data-Explorer/.key.txt'
+KEY_FILENAME = '/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/.key.txt'
 
 # read and store BU credentials
 def read_creds(filename):
@@ -18,10 +18,10 @@ def read_creds(filename):
     
     creds = {
         "host": "bioed-new.bu.edu",
-        "user": lines[0],
-        "password": lines[1],
-        "database": lines[2],
-        "port": int(lines[3])
+        "user": lines[0],           
+        "password": lines[1],       
+        "database": lines[2],       
+        "port": int(lines[3])       
     }
     
     return creds
@@ -52,11 +52,62 @@ def index():
         return jsonify(tables)
     except mariadb.Error as e:
         return jsonify({"error": str(e)}), 500
+    
+
+@app.route('/api/joined-data')
+def get_joined_data():
+    try:
+        conn, cur = get_db()
+
+        # Example JOIN query — replace with actual PK/FK logic
+        cur.execute("""
+            SELECT *
+            FROM miRNA;
+        """)
+        
+        columns = [desc[0] for desc in cur.description]
+        rows = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        return jsonify({"columns": columns, "rows": rows})
+
+    except mariadb.Error as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/model/<model_id>')
+def get_model_info(model_id):
+    try:
+        conn, cur = get_db()
+
+        cur.execute("SELECT * FROM miRNA WHERE model_id = ?", (model_id,))
+        row = cur.fetchone()
+        if not row:
+            return jsonify({"error": "Model not found"}), 404
+        
+        columns = [desc[0] for desc in cur.description]
+        model_data = dict(zip(columns, row))
+
+        # Placeholder comet plot — replace this later
+        plot_data = f"Generated comet plot for model {model_id} (placeholder)"
+
+        cur.close()
+        conn.close()
+
+    except:
+        return jsonify({"error": str(e)}), 500
+    
 
 # serve react frontend
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_static(path):
+    # Let /api/* pass through to backend
+    if path.startswith('api/'):
+        abort(404)
+
     full_path = os.path.join(app.static_folder, path)
     if os.path.isfile(full_path):
         return send_from_directory(app.static_folder, path)

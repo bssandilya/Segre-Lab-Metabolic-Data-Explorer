@@ -4,28 +4,28 @@ import Header from './components/Header';
 import CometPlot from './components/CometPlot';
 
 const App = () => {
-    const [columns, setColumns] = useState([]); // Store the dynamically generated column names
-    const [data, setData] = useState([]); // Store fetched data
-    const [cometImage, setCometImage] = useState(null); // Store the comet image
+    const [columns, setColumns] = useState([]);
+    const [data, setData] = useState([]);
+    const [cometImage, setCometImage] = useState(null);
 
     useEffect(() => {
-        fetch("/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/tables")
+        fetch("/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/joined-data")
             .then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch");
                 return res.json();
             })
             .then((fetchedData) => {
-                setData(fetchedData);
-                if (fetchedData.length > 0) {
-                    setColumns(fetchedData); // Extract column names from the first row
-                }
+                setColumns(fetchedData.columns || []);
+                const formatted = (fetchedData.rows || []).map((row) =>
+                    Object.fromEntries(fetchedData.columns.map((col, i) => [col, row[i]]))
+                );
+                setData(formatted);
             })
-            .catch((err) => console.error("Error fetching data:", err));
+            .catch((err) => console.error("Error fetching model table:", err));
     }, []);
 
     return (
         <div>
-            {/* Pass columns and data to the Header */}
             <Header columns={columns} data={data} />
             <br />
             <CometPlot data={cometImage} />
