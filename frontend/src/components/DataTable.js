@@ -23,7 +23,7 @@ function DataTable({ columns, data }) {
                 </thead>
                 <tbody>
                     {currentData.map((row, index) => (
-                        <tr key={index} onClick={() => navigate(`/app/model/${row.model_id}`)}>
+                        <tr key={index} onClick={() => navigate(`/model/${row.mid}`)}>
                             {columns.map((column, colIndex) => (
                                 <td key={colIndex}>{row[column]}</td>
                             ))}

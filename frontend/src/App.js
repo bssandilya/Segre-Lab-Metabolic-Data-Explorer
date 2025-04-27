@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DataTable from './components/DataTable';
 import Header from './components/Header';
 import CometPlot from './components/CometPlot';
+import ModelInfo from './components/ModelInfo';
 
 const App = () => {
     const [columns, setColumns] = useState([]);
@@ -25,17 +27,36 @@ const App = () => {
     }, []);
 
     return (
-        <div>
-            <Header columns={columns} data={data} />
-            <br />
-            <CometPlot data={cometImage} />
-            <br />
-            {columns.length > 0 ? (
-                <DataTable columns={columns} data={data} />
-            ) : (
-                <div id='data_table_loading'>Loading...</div>
-            )}
-        </div>
+        <Router basename="/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app">
+            <div>
+                <Header columns={columns} data={data} />
+                <br />
+                <Routes>
+                    <Route 
+                        index 
+                        element={
+                            <div>
+                                {/* Only render CometPlot if there is cometImage data */}
+                                {cometImage ? (
+                                    <>
+                                        <CometPlot data={cometImage} />
+                                        <br />
+                                    </>
+                                ) : (
+                                    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>No comet plot to display.</div>
+                                )}
+                                {columns.length > 0 ? (
+                                    <DataTable columns={columns} data={data} />
+                                ) : (
+                                    <div id='data_table_loading'>Loading table...</div>
+                                )}
+                            </div>
+                        }
+                    />
+                    <Route path="model/:modelId" element={<ModelInfo />} />
+                </Routes>
+            </div>
+        </Router>
     );
 };
 

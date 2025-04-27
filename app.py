@@ -59,7 +59,6 @@ def get_joined_data():
     try:
         conn, cur = get_db()
 
-        # Example JOIN query — replace with actual PK/FK logic
         cur.execute("""
             SELECT *
             FROM miRNA;
@@ -82,7 +81,7 @@ def get_model_info(model_id):
     try:
         conn, cur = get_db()
 
-        cur.execute("SELECT * FROM miRNA WHERE model_id = ?", (model_id,))
+        cur.execute("SELECT * FROM miRNA WHERE mid = ?", (model_id,))
         row = cur.fetchone()
         if not row:
             return jsonify({"error": "Model not found"}), 404
@@ -96,7 +95,9 @@ def get_model_info(model_id):
         cur.close()
         conn.close()
 
-    except:
+        return jsonify({"model": model_data, "plot": plot_data})
+
+    except mariadb.Error as e:
         return jsonify({"error": str(e)}), 500
     
 
