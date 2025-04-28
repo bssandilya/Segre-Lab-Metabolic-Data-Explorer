@@ -2,20 +2,7 @@ import React, { useState } from 'react';
 
 const AddModelForm = () => {
   const [formData, setFormData] = useState({
-    model_id: '',
-    carbon_id: '',
-    species_id: '',
-    media_id: '',
-    experiment_id: '',
-    gapfill_method: 'CarveMe',
-    annotation_method: 'CarveMe',
-    metabolite_ID: '',
-    platform: 'CarveMe',
-    biomass_composition: 'gram_pos',
-    date_created: '',
-    control_type: 'pos',
-    notes: '',
-    parent_model_id: '',
+    carbon_source: '',
     model_file: ''
   });
 
@@ -26,10 +13,24 @@ const AddModelForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Build the full data object to match your team's database expectations
+    const submissionData = {
+      media: "mbm",
+      gapfill_method: "ModelSEED",
+      annotation_method: "RAST",
+      scientist: "Helen Scott",
+      species: "Alteramonas",
+      growth_method: "Plate",
+      carbon_source: formData.carbon_source,
+      model_file: formData.model_file,
+      // All other fields will be NULL / left blank by your backend handling
+    };
+
     fetch('/api/add-model', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(submissionData)
     })
       .then((res) => res.json())
       .then((data) => {
@@ -44,40 +45,31 @@ const AddModelForm = () => {
 
   return (
     <form onSubmit={handleSubmit} style={{ margin: '20px' }}>
-      <h2>Add New Model</h2>
-      {Object.keys(formData).map((key) => (
-        <div key={key} style={{ marginBottom: '10px' }}>
-          <label style={{ marginRight: '10px' }}>{key}:</label>
-          {['gapfill_method', 'annotation_method', 'platform'].includes(key) ? (
-            <select name={key} value={formData[key]} onChange={handleChange}>
-              <option value="CarveMe">CarveMe</option>
-              <option value="ModelSEED">ModelSEED</option>
-              <option value="KBase">KBase</option>
-            </select>
-          ) : key === 'biomass_composition' ? (
-            <select name={key} value={formData[key]} onChange={handleChange}>
-              <option value="gram_pos">gram_pos</option>
-              <option value="gram_neg">gram_neg</option>
-              <option value="other">other</option>
-            </select>
-          ) : key === 'control_type' ? (
-            <select name={key} value={formData[key]} onChange={handleChange}>
-              <option value="pos">pos</option>
-              <option value="neg">neg</option>
-            </select>
-          ) : key === 'date_created' ? (
-            <input type="date" name={key} value={formData[key]} onChange={handleChange} />
-          ) : (
-            <input
-              type="text"
-              name={key}
-              value={formData[key]}
-              onChange={handleChange}
-            />
-          )}
-        </div>
-      ))}
-      <button type="submit">Submit</button>
+      <h2>Add a New Model</h2>
+
+      <div style={{ marginBottom: '10px' }}>
+        <label style={{ marginRight: '10px' }}>Carbon Source (extracted or entered manually):</label>
+        <input
+          type="text"
+          name="carbon_source"
+          value={formData.carbon_source}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div style={{ marginBottom: '10px' }}>
+        <label style={{ marginRight: '10px' }}>Model File Path (XML):</label>
+        <input
+          type="text"
+          name="model_file"
+          value={formData.model_file}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <button type="submit">Submit Model</button>
     </form>
   );
 };
