@@ -53,7 +53,7 @@ CREATE TABLE model (
     media_id INT,
     experiment_id INT,
     gapfill_method ENUM('CarveMe', 'ModelSEED', 'KBase'),
-    annotation_method ENUM('CarveMe', 'ModelSEED', 'KBase'),
+    annotation_method ENUM('RefSeq','RAST','eggNOG'),
     metabolite_ID INT,
     platform ENUM('CarveMe', 'ModelSEED', 'KBase'),
     biomass_composition ENUM('gram_pos', 'gram_neg', 'other'),
