@@ -3,6 +3,7 @@
 from flask import Flask, jsonify, send_from_directory, abort
 import mariadb
 import os
+import cometspy as c
 
 app = Flask(__name__, static_folder='/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/static')
 # CORS not needed when frontend is served from same origin
