@@ -6,7 +6,6 @@ import os
 import cometspy as c
 
 app = Flask(__name__, static_folder='/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/static')
-# CORS not needed when frontend is served from same origin
 
 KEY_FILENAME = '/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/.key.txt'
 
