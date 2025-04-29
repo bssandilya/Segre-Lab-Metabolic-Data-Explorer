@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 # Constants - IMPORTANT: Use a directory you have access to
 GITHUB_RAW_CONTENT_BASE = "https://raw.githubusercontent.com/segrelab/GEM-mit1002/dev/modelseedpy_gapfill_per_biomass_cmpt/"
-DOWNLOAD_DIR = os.path.join(os.path.expanduser("~/Segre-Lab-Metabolic-Data-Explorer/database"), "xml_files") 
+DOWNLOAD_DIR = os.path.join(os.path.expanduser("/var/www/html/students_25/Team5"), "xml_files") 
 XML_DIRECTORY = DOWNLOAD_DIR  # This is where the files will be stored and referenced in the database
 
 # Database data constants
