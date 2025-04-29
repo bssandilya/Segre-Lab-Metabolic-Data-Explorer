@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DataTable from './components/DataTable';
 import Header from './components/Header';
-import CometPlot from './components/CometPlot';
 import ModelInfo from './components/ModelInfo';
 
 const App = () => {
     const [columns, setColumns] = useState([]);
     const [data, setData] = useState([]);
-    const [cometImage, setCometImage] = useState(null);
 
     useEffect(() => {
         fetch("/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/joined-data")
@@ -36,15 +34,6 @@ const App = () => {
                         index 
                         element={
                             <div>
-                                {/* Only render CometPlot if there is cometImage data */}
-                                {cometImage ? (
-                                    <>
-                                        <CometPlot data={cometImage} />
-                                        <br />
-                                    </>
-                                ) : (
-                                    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>No comet plot to display.</div>
-                                )}
                                 {columns.length > 0 ? (
                                     <DataTable columns={columns} data={data} />
                                 ) : (

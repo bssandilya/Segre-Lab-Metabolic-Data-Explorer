@@ -60,8 +60,16 @@ def get_joined_data():
         conn, cur = get_db()
 
         cur.execute("""
-            SELECT *
-            FROM miRNA;
+            SELECT model_id, 
+                    species_name,
+                    c_source, 
+                    growth_method, 
+                    gapfill_method, 
+                    annotation_method
+            FROM model
+            JOIN species USING(species_id)
+            JOIN carbon_source USING(carbon_id)
+            JOIN experimental_conditions USING(experiment_id)
         """)
         
         columns = [desc[0] for desc in cur.description]
@@ -81,7 +89,7 @@ def get_model_info(model_id):
     try:
         conn, cur = get_db()
 
-        cur.execute("SELECT * FROM miRNA WHERE mid = ?", (model_id,))
+        cur.execute("SELECT * FROM model WHERE model_id = ?", (model_id,))
         row = cur.fetchone()
         if not row:
             return jsonify({"error": "Model not found"}), 404
