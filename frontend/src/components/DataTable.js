@@ -6,6 +6,7 @@ function DataTable({ columns, data }) {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedRow, setSelectedRow] = useState(null);
+    const [entriesPerPage, setEntriesPerPage] = useState(5);  // Default is 5 entries per page
     const [filters, setFilters] = useState({
         species_name: "",
         c_source: "",
@@ -13,23 +14,17 @@ function DataTable({ columns, data }) {
         gapfill_method: "",  // Will be a dropdown
         annotation_method: "",  // Will be a dropdown
     });
-    const rowsPerPage = 5;
 
-    // List of custom filter labels (for display)
     const filterLabels = {
         species_name: "Species Name",
         c_source: "Carbon Source",
         growth_method: "Growth Method",
-        gapfill_method: "Gapfill Algorithm",
+        gapfill_method: "Gapfill Method",
         annotation_method: "Annotation Method",
     };
 
-    // Options for dropdown filters
-    const dropdownOptions = {
-        gapfill_method: ["ModelSEED", "CarveME"],
-        annotation_method: ["RefSeq", "eggNOG", "RAST"],
-    };
-
+    const rowsPerPage = entriesPerPage;
+    
     // Filter the data based on column filter values
     const filteredData = data.filter(row => {
         return Object.keys(filters).every(column => {
@@ -38,9 +33,9 @@ function DataTable({ columns, data }) {
         });
     });
 
-    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+    const totalPages = Math.ceil(filteredData.length / rowsPerPage); // Total pages based on filtered data
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const currentData = filteredData.slice(startIndex, startIndex + rowsPerPage);
+    const currentData = filteredData.slice(startIndex, startIndex + rowsPerPage); // Slice based on filtered data
 
     const handleRowClick = (row) => {
         setSelectedRow(row);
@@ -59,18 +54,22 @@ function DataTable({ columns, data }) {
         }));
     };
 
+    const handleEntriesPerPageChange = (event) => {
+        setEntriesPerPage(Number(event.target.value));  // Update the entries per page
+        setCurrentPage(1);  // Reset to page 1 when the entries per page change
+    };
+
     return (
         <div className="data-table">
             {/* Filters */}
             <div className="filters" style={{ marginBottom: "1rem", textAlign: "center" }}>
                 <h3>Filter by Category</h3>
                 <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
-                    {Object.keys(filterLabels).map((column, index) => (
+                    {Object.keys(filters).map((column, index) => (
                         <div key={index} style={{ marginBottom: "0.5rem" }}>
                             <label htmlFor={column} style={{ marginRight: "0.5rem" }}>
                                 {filterLabels[column]}
                             </label>
-
                             {/* Check if the filter is a dropdown or input */}
                             {column === "gapfill_method" || column === "annotation_method" ? (
                                 <select
@@ -80,11 +79,19 @@ function DataTable({ columns, data }) {
                                     style={{ padding: "0.5rem", width: "150px" }}
                                 >
                                     <option value="">Select {filterLabels[column]}</option>
-                                    {dropdownOptions[column].map((option, index) => (
-                                        <option key={index} value={option}>
-                                            {option}
-                                        </option>
-                                    ))}
+                                    {column === "gapfill_method" && (
+                                        <>
+                                            <option value="ModelSEED">ModelSEED</option>
+                                            <option value="CarveME">CarveME</option>
+                                        </>
+                                    )}
+                                    {column === "annotation_method" && (
+                                        <>
+                                            <option value="RefSeq">RefSeq</option>
+                                            <option value="eggNOG">eggNOG</option>
+                                            <option value="RAST">RAST</option>
+                                        </>
+                                    )}
                                 </select>
                             ) : (
                                 <input
@@ -92,13 +99,36 @@ function DataTable({ columns, data }) {
                                     type="text"
                                     value={filters[column]}
                                     onChange={(e) => handleFilterChange(column, e.target.value)}
-                                    placeholder={`Filter by ${filterLabels[column]}`}
+                                    placeholder={
+                                        column === "species_name"
+                                            ? "e.g. Alteromonas"
+                                            : column === "c_source"
+                                            ? "e.g. cpd00001"
+                                            : column === "growth_method"
+                                            ? "e.g. Plate"
+                                            : ""
+                                    }
                                     style={{ padding: "0.5rem", width: "150px" }}
                                 />
                             )}
                         </div>
                     ))}
                 </div>
+            </div>
+
+            {/* Entries per page */}
+            <div className="entries-per-page" style={{ textAlign: "left", marginBottom: "1rem" }}>
+                <label htmlFor="entriesPerPage" style={{ marginRight: "0.5rem" }}>Entries per page:</label>
+                <select
+                    id="entriesPerPage"
+                    value={entriesPerPage}
+                    onChange={handleEntriesPerPageChange}
+                    style={{ padding: "0.5rem", width: "150px" }}
+                >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                </select>
             </div>
 
             {/* Table */}
@@ -129,7 +159,7 @@ function DataTable({ columns, data }) {
             </table>
 
             {/* Pagination Controls */}
-            <div className="pagination">
+            <div className="pagination" style={{ textAlign: "left", marginTop: "2rem" }}>
                 <button onClick={() => setCurrentPage(p => Math.max(p - 1, 1))} disabled={currentPage === 1}>
                     ← Previous
                 </button>
