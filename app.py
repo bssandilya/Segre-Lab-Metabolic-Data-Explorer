@@ -3,6 +3,7 @@
 from flask import Flask, jsonify, send_from_directory, abort
 import mariadb
 import os
+import sys
 
 app = Flask(__name__, static_folder='/var/www/html/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/static')
 
@@ -101,7 +102,7 @@ def get_model_info(model_id):
         model_data = dict(zip(columns, row))
 
         # Placeholder comet plot — replace this later
-        plot_data = f"Generated comet plot for model {model_id} (placeholder)"
+        plot_data = model_id
 
         cur.close()
         conn.close()

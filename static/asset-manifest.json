@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/static/css/main.b9eb981f.css",
-    "main.js": "/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/static/js/main.c40aae93.js",
+    "main.js": "/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/static/js/main.5abcf77c.js",
     "static/js/453.8ab44547.chunk.js": "/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/static/js/453.8ab44547.chunk.js",
     "index.html": "/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/index.html",
     "main.b9eb981f.css.map": "/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/static/css/main.b9eb981f.css.map",
-    "main.c40aae93.js.map": "/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/static/js/main.c40aae93.js.map",
+    "main.5abcf77c.js.map": "/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/static/js/main.5abcf77c.js.map",
     "453.8ab44547.chunk.js.map": "/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b9eb981f.css",
-    "static/js/main.c40aae93.js"
+    "static/js/main.5abcf77c.js"
   ]
 }
