@@ -2,6 +2,7 @@
 
 # build react app
 cd frontend
+npm install
 npm run build
 
 # move into Flask project root

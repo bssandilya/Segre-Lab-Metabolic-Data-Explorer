@@ -9,7 +9,7 @@ const App = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch("/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/joined-data")
+        fetch("/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/api/joined-data")
             .then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch");
                 return res.json();
@@ -25,7 +25,7 @@ const App = () => {
     }, []);
 
     return (
-        <Router basename="/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app">
+        <Router basename="/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app">
             <div>
                 <Header columns={columns} data={data} />
                 <br />

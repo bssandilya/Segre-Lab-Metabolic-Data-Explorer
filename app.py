@@ -3,11 +3,10 @@
 from flask import Flask, jsonify, send_from_directory, abort
 import mariadb
 import os
-import cometspy as c
 
-app = Flask(__name__, static_folder='/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/static')
+app = Flask(__name__, static_folder='/var/www/html/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/static')
 
-KEY_FILENAME = '/var/www/html/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/.key.txt'
+KEY_FILENAME = '/var/www/html/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/.key.txt'
 
 # read and store BU credentials
 def read_creds(filename):
@@ -53,6 +52,10 @@ def index():
     except mariadb.Error as e:
         return jsonify({"error": str(e)}), 500
     
+# test images
+@app.route('/cometsplots/<filename>')
+def serve_comet_plot(filename):
+    return send_from_directory('cometsplots', filename)
 
 @app.route('/api/joined-data')
 def get_joined_data():

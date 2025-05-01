@@ -13,7 +13,7 @@ function CometPlot({ data }) {
     }
 
     // Assume 'data' is the model ID, and images are named like 'comets_vis_<mid>.png'
-    const imagePath = `/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/cometplots/comets_vis_${data}.png`;
+    const imagePath = `/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/cometsplots/2dcometsplot.png`;
 
     return (
         <div className="comet-plot" style={{ textAlign: "center", marginTop: "1rem" }}>

@@ -9,7 +9,7 @@ const ModelInfo = () => {
     const [plotData, setPlotData] = useState(null);
 
     useEffect(() => {
-        fetch(`/students_25/bsandi/Segre-Lab-Metabolic-Data-Explorer/app/api/model/${modelId}`)
+        fetch(`/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/app/api/model/${modelId}`)
             .then(res => res.json())
             .then(({ model, plot }) => {
                 setModel(model);
