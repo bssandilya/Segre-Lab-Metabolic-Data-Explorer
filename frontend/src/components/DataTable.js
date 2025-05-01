@@ -76,7 +76,7 @@ function DataTable({ columns, data }) {
                                     id={column}
                                     value={filters[column]}
                                     onChange={(e) => handleFilterChange(column, e.target.value)}
-                                    style={{ padding: "0.5rem", width: "150px" }}
+                                    style={{ padding: "0.5rem", width: "200px" }}
                                 >
                                     <option value="">Select {filterLabels[column]}</option>
                                     {column === "gapfill_method" && (
@@ -101,14 +101,14 @@ function DataTable({ columns, data }) {
                                     onChange={(e) => handleFilterChange(column, e.target.value)}
                                     placeholder={
                                         column === "species_name"
-                                            ? "e.g. Alteromonas"
+                                            ? "e.g. Alteromonas macleodii"
                                             : column === "c_source"
                                             ? "e.g. cpd00001"
                                             : column === "growth_method"
                                             ? "e.g. Plate"
                                             : ""
                                     }
-                                    style={{ padding: "0.5rem", width: "150px" }}
+                                    style={{ padding: "0.5rem", width: "200px" }}
                                 />
                             )}
                         </div>
