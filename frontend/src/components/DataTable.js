@@ -6,13 +6,13 @@ function DataTable({ columns, data }) {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedRow, setSelectedRow] = useState(null);
-    const [entriesPerPage, setEntriesPerPage] = useState(5);  // Default is 5 entries per page
+    const [entriesPerPage, setEntriesPerPage] = useState(5);
     const [filters, setFilters] = useState({
         species_name: "",
         c_source: "",
         growth_method: "",
-        gapfill_method: "",  // Will be a dropdown
-        annotation_method: "",  // Will be a dropdown
+        gapfill_method: "",
+        annotation_method: "",
     });
 
     const filterLabels = {
@@ -24,8 +24,7 @@ function DataTable({ columns, data }) {
     };
 
     const rowsPerPage = entriesPerPage;
-    
-    // Filter the data based on column filter values
+
     const filteredData = data.filter(row => {
         return Object.keys(filters).every(column => {
             const filterValue = filters[column].toLowerCase();
@@ -33,9 +32,9 @@ function DataTable({ columns, data }) {
         });
     });
 
-    const totalPages = Math.ceil(filteredData.length / rowsPerPage); // Total pages based on filtered data
+    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const currentData = filteredData.slice(startIndex, startIndex + rowsPerPage); // Slice based on filtered data
+    const currentData = filteredData.slice(startIndex, startIndex + rowsPerPage);
 
     const handleRowClick = (row) => {
         setSelectedRow(row);
@@ -43,7 +42,7 @@ function DataTable({ columns, data }) {
 
     const handleMoreInfoClick = () => {
         if (selectedRow) {
-            navigate(`/model/${selectedRow.model_id}`);  // 👈 fixed here: model_id
+            navigate(`/model/${selectedRow.model_id}`);
         }
     };
 
@@ -55,8 +54,25 @@ function DataTable({ columns, data }) {
     };
 
     const handleEntriesPerPageChange = (event) => {
-        setEntriesPerPage(Number(event.target.value));  // Update the entries per page
-        setCurrentPage(1);  // Reset to page 1 when the entries per page change
+        setEntriesPerPage(Number(event.target.value));
+        setCurrentPage(1);
+    };
+
+    const downloadCSV = () => {
+        const csvHeader = columns.join(",");
+        const csvRows = filteredData.map(row =>
+            columns.map(col => `"${(row[col] || "").toString().replace(/"/g, '""')}"`).join(",")
+        );
+        const csvContent = [csvHeader, ...csvRows].join("\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "filtered_data.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     return (
@@ -64,13 +80,12 @@ function DataTable({ columns, data }) {
             {/* Filters */}
             <div className="filters" style={{ marginBottom: "1rem", textAlign: "center" }}>
                 <h3>Filter by Category</h3>
-                <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+                <div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
                     {Object.keys(filters).map((column, index) => (
                         <div key={index} style={{ marginBottom: "0.5rem" }}>
                             <label htmlFor={column} style={{ marginRight: "0.5rem" }}>
                                 {filterLabels[column]}
                             </label>
-                            {/* Check if the filter is a dropdown or input */}
                             {column === "gapfill_method" || column === "annotation_method" ? (
                                 <select
                                     id={column}
@@ -116,19 +131,35 @@ function DataTable({ columns, data }) {
                 </div>
             </div>
 
-            {/* Entries per page */}
-            <div className="entries-per-page" style={{ textAlign: "left", marginBottom: "1rem" }}>
-                <label htmlFor="entriesPerPage" style={{ marginRight: "0.5rem" }}>Entries per page:</label>
-                <select
-                    id="entriesPerPage"
-                    value={entriesPerPage}
-                    onChange={handleEntriesPerPageChange}
-                    style={{ padding: "0.5rem", width: "150px" }}
+            {/* Entries per page & download */}
+            <div className="entries-controls" style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
+                <div>
+                    <label htmlFor="entriesPerPage" style={{ marginRight: "0.5rem" }}>Entries per page:</label>
+                    <select
+                        id="entriesPerPage"
+                        value={entriesPerPage}
+                        onChange={handleEntriesPerPageChange}
+                        style={{ padding: "0.5rem", width: "150px" }}
+                    >
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                    </select>
+                </div>
+                <button
+                    onClick={downloadCSV}
+                    style={{
+                        padding: "0.5rem 1rem",
+                        backgroundColor: "#28a745",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        fontSize: "1rem"
+                    }}
                 >
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                </select>
+                    Download CSV
+                </button>
             </div>
 
             {/* Table */}
