@@ -26,6 +26,19 @@ def read_creds(filename):
     
     return creds
 
+
+
+# Connect to MariaDB using the credentials from read_creds
+def get_db():
+    config = read_creds(KEY_FILENAME)  # Use the correct path to your key file
+    try:
+        conn = mariadb.connect(**config)
+        cur = conn.cursor()
+        return conn, cur
+    except mariadb.Error as e:
+        print(f"Error: {e}")
+        return None, None
+
 # model is path to xml file
 # mid is model id for naming
 # makes growth curve
@@ -123,18 +136,6 @@ def make_grid_plot(model, mid):
     plt.savefig(f'cometsplots/model_{mid}_gridplot.png')
     print("plot saved")
 
-
-# Connect to MariaDB using the credentials from read_creds
-def get_db():
-    config = read_creds(KEY_FILENAME)  # Use the correct path to your key file
-    try:
-        conn = mariadb.connect(**config)
-        cur = conn.cursor()
-        return conn, cur
-    except mariadb.Error as e:
-        print(f"Error: {e}")
-        return None, None
-
 # Function to query the database and pass the results to make_line_plot
 def process_models():
     conn, cur = get_db()
@@ -174,6 +175,44 @@ def process_models():
         conn.close()
 
 # Run the function to process models
-process_models()
+# process_models()
+def update_model_file_paths_individually():
+    old_prefix = "/var/www/html/students_25/Team5/xml_files/"
+    new_prefix = "/var/www/html/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/xml_files/"
 
+    conn, cur = get_db()
+    if not conn or not cur:
+        print("Database connection failed.")
+        return
+
+    try:
+        # Step 1: Fetch all model_id and model_file values
+        cur.execute("SELECT model_id, model_file FROM model")
+        rows = cur.fetchall()
+        print(rows)
+
+        updated_count = 0
+
+        for model_id, model_file in rows:
+            if model_file and model_file.startswith(old_prefix):
+                new_path = model_file.replace(old_prefix, new_prefix, 1)
+
+                # Step 2: Update that specific row
+                cur.execute(
+                    "UPDATE model SET model_file = %s WHERE model_id = %s",
+                    (new_path, model_id)
+                )
+                updated_count += 1
+
+        conn.commit()
+        print(f"{updated_count} row(s) updated.")
+    except mariadb.Error as e:
+        print(f"Error during update: {e}")
+        conn.rollback()
+    finally:
+        cur.close()
+        conn.close()
+
+
+update_model_file_paths_individually()
 

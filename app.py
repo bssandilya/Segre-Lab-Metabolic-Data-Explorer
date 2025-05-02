@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, jsonify, send_from_directory, abort
+from flask import Flask, jsonify, send_from_directory, abort, request
 import mariadb
 import os
 import sys
@@ -39,6 +39,14 @@ def get_db():
     except mariadb.Error as e:
         return jsonify({"error": str(e)}), 500
     
+@app.route('/xml_files/<filename>')
+def serve_model_file(filename):
+    return send_from_directory(
+        '/var/www/html/students_25/Team5/Segre-Lab-Metabolic-Data-Explorer/xml_files',
+        filename,
+        as_attachment=True
+    )
+
 # testing function, show the tables that are detected in a database
 @app.route('/api/tables')
 def index():
